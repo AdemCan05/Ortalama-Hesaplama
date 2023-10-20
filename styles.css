@@ -1,0 +1,105 @@
+/* Temel stil */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+#ortalama-hesaplama {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 400px;
+    background-color: rgba(0, 0, 0, 0.5); /* Siyah saydam arka plan ekleyin */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    margin: 0 0 20px;
+    color: #000; /* Metin rengi */
+    position: relative; /* Başlık pozisyonu göreceli yapın */
+    z-index: 1; /* Başlığı ön plana getirin */
+}
+
+#grade-form {
+    text-align: left;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+#sonuc {
+    margin-top: 20px;
+    font-weight: bold;
+    opacity: 0.8;
+    color: #fff; /* Açık renk metin ekleyin */
+}
+
+#bell-egri {
+    margin-top: 20px;
+}
+
+/* Arka plan stil */
+body {
+    background: url("background.jpg") repeat;
+    animation: kayanArkaPlan 100s linear infinite;
+}
+
+@keyframes kayanArkaPlan {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 100% 0;
+    }
+}
+
+/* Footer stil */
+footer {
+    position: fixed; /* Sayfanın altına sabitle */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Arka plan rengi, şeffaflık ekleyebilirsiniz */
+    color: #fff; /* Metin rengi */
+    padding: 10px; /* İç içe boşluk */
+    text-align: center; /* Metin hizalama */
+}
+
+footer a {
+    color: #007BFF; /* Link rengi */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+#ortalama-hesaplama h1 {
+    font-size: 24px;
+    margin: 0 0 20px;
+    color: white; /* Başlık metni rengi beyaz */
+}
