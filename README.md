@@ -56,7 +56,7 @@ document.getElementById("grade-form").addEventListener("submit", function (e) {
 });
 ```
 
-see my web-page in https://orthesapla.netlify.app
+see my web-page in https://ortahesapla.netlify.app
 
 ## Networks
 [LinkedIn Adem Can Demirci](https://www.linkedin.com/in/adem-can-demirci-100acd100/)
