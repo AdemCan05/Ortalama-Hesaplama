@@ -1,11 +1,5 @@
 # Ortalama Hesaplama
 
-
-## CS50
->This was my final project for conclude the CS50 Introduction to Computer Sciense course
-
-> CSS, HTML, JS, web devolopment, CS50
-
 I first used html to create my page, then I used javascript to make my site function, and finally I used css to adjust its appearance.
 
 ## The purpose of the web page I created
@@ -61,8 +55,6 @@ document.getElementById("grade-form").addEventListener("submit", function (e) {
     hesapla(); // Hesapla fonksiyonunu çağır
 });
 ```
-## Demonstration on youtube
-https://youtu.be/WotfDPjF58o
 
 ## Networks
 [LinkedIn Adem Can Demirci](https://www.linkedin.com/in/adem-can-demirci-100acd100/)
