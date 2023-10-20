@@ -56,5 +56,7 @@ document.getElementById("grade-form").addEventListener("submit", function (e) {
 });
 ```
 
+if you want see site go [Ortalamanı Hesapla](ortahesapla.netlify.app/)
+
 ## Networks
 [LinkedIn Adem Can Demirci](https://www.linkedin.com/in/adem-can-demirci-100acd100/)
