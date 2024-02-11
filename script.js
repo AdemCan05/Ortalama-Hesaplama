@@ -1,39 +1,65 @@
-function hesapla() {
-    var vize = parseFloat(document.getElementsByName("vize")[0].value);
-    var final = parseFloat(document.getElementsByName("finalbüt")[0].value);
-
-    // Geçerli not aralığını kontrol et
-    if (isNaN(vize) || isNaN(final) || vize < 0 || vize > 100 || final < 0 || final > 100) {
-        // Notlar geçerli değilse veya aralık dışındaysa hata mesajı göster
-        var sonuc = document.getElementById("sonuc");
-        sonuc.innerHTML = "Geçerli notlar girin (0-100 arasında).";
-        return;
-    }
-
-    // Ara sınavın %40, yarıyıl sonu sınavının %60 ağırlığı ile hesaplanması
-    var ortalama = (vize * 0.4) + (final * 0.6);
-
-    var sonuc = document.getElementById("sonuc");
-
-    // Ortalamaya göre notlar ve başarı durumu
-    if (ortalama >= 90) {
-        sonuc.innerHTML = "Ortalama: AA<br>Notunuz: Başarılı";
-    } else if (ortalama >= 80) {
-        sonuc.innerHTML = "Ortalama: BA<br>Notunuz: Başarılı";
-    } else if (ortalama >= 70) {
-        sonuc.innerHTML = "Ortalama: BB<br>Notunuz: Başarılı";
-    } else if (ortalama >= 60) {
-        sonuc.innerHTML = "Ortalama: CB<br>Notunuz: Başarılı";
-    } else if (ortalama >= 50) {
-        sonuc.innerHTML = "Ortalama: CC<br>Notunuz: Başarılı";
-    } else if (ortalama >= 40) {
-        sonuc.innerHTML = "Ortalama: DC<br>Notunuz: Başarısız";
-    } else {
-        sonuc.innerHTML = "Ortalama: FF<br>Notunuz: Başarısız";
-    }
-}
-
 document.getElementById("grade-form").addEventListener("submit", function (e) {
-    e.preventDefault(); // Form gönderimini engelle
-    hesapla(); // Hesapla fonksiyonunu çağır
+    e.preventDefault(); // Form gönderimini önle
+
+    var examCount = parseInt(document.getElementById("exam-count").value);
+    var totalGrade = 0;
+
+    // Notları topla
+    for (var i = 0; i < examCount; i++) {
+        var not = parseFloat(document.getElementById("not" + (i + 1)).value);
+        var yuzde = parseFloat(document.getElementById("yuzde" + (i + 1)).value);
+
+        // Notun geçerli olup olmadığını kontrol et
+        if (isNaN(not) || not < 0 || not > 100) {
+            var sonuc = document.getElementById("sonuc");
+            sonuc.innerHTML = "Geçerli notlar girin (0-100 arasında).";
+            return;
+        }
+
+        // Yüzdenin geçerli olup olmadığını kontrol et
+        if (isNaN(yuzde) || yuzde <= 0 || yuzde > 100) {
+            var sonuc = document.getElementById("sonuc");
+            sonuc.innerHTML = "Geçerli yüzde değerleri girin (0-100 arasında).";
+            return;
+        }
+
+        totalGrade += (not * yuzde / 100); // Yüzdeli notları topla
+    }
+
+    // Ortalama notu görüntüle
+    var sonuc = document.getElementById("sonuc");
+    sonuc.innerHTML = "Ortalama: " + totalGrade.toFixed(2); // Ortalamanın 2 ondalık basamakla gösterilmesi
+});
+
+// Not sayısına göre not alanlarını oluştur
+document.getElementById("exam-count").addEventListener("input", function() {
+    var examCount = parseInt(this.value);
+    var notlarDiv = document.getElementById("exam-fields");
+    notlarDiv.innerHTML = ""; // Önceki not alanlarını temizle
+
+    for (var i = 0; i < examCount; i++) {
+        var notInput = document.createElement("input");
+        notInput.type = "number";
+        notInput.id = "not" + (i + 1);
+        notInput.name = "not" + (i + 1);
+        notInput.placeholder = "Not " + (i + 1);
+        notInput.step = "any";
+        notInput.required = true;
+
+        var yuzdeInput = document.createElement("input");
+        yuzdeInput.type = "number";
+        yuzdeInput.id = "yuzde" + (i + 1);
+        yuzdeInput.name = "yuzde" + (i + 1);
+        yuzdeInput.placeholder = "Yüzde " + (i + 1);
+        yuzdeInput.step = "any";
+        yuzdeInput.min = "0";
+        yuzdeInput.max = "100";
+        yuzdeInput.required = true;
+
+        var br = document.createElement("br");
+
+        notlarDiv.appendChild(notInput);
+        notlarDiv.appendChild(yuzdeInput);
+        notlarDiv.appendChild(br);
+    }
 });
