@@ -1,62 +1,47 @@
-# Ortalama Hesaplama
+# İSTE Bell Curve Calculator | İSTE Çan Sistemi Hesaplayıcı
 
-I first used html to create my page, then I used javascript to make my site function, and finally I used css to adjust its appearance.
+A modern, premium university-grade web application built specifically for **İskenderun Technical University (İSTE)** students to calculate their weighted averages, estimate letter grades, and simulate the official relative grading (bell curve) system.
 
-## The purpose of the web page I created
-The purpose of my site is to indicate that the school where I study is successful or unsuccessful according to the scores we receive as a result of the exams as a letter grade and as a result of the exam.
+![İSTE Curve App](calculator.png)
 
-## How do I calculate the average
-I added a js code that shows whether the grades I use to calculate the average are valid or not, should be a number between 0 and 100, and how much the midterm and final grades affect the average.
+## 🚀 Features
 
-```
-javascript
-function hesapla() {
-    var vize = parseFloat(document.getElementsByName("vize")[0].value);
-    var final = parseFloat(document.getElementsByName("finalbüt")[0].value);
+- **Dual-Pane Tabbed Interface:** Switch instantly between the standard Average Calculator and the Bell Curve Simulator.
+- **İSTE Official Regulations Enforced:** Automatically accounts for the FF rule (if average < 30 or final score < 30, it assigns an FF).
+- **Bell Curve Visualization:** Beautiful, interactive normal distribution charts built with `Chart.js` to pinpoint exactly where you stand among your peers.
+- **PDF Export Engine:** Download your Bell Curve analysis directly to a PDF document using `html2pdf.js`.
+- **Progressive Web App (PWA):** Installable on mobile and desktop devices for offline access and native-app feel.
+- **Bilingual Support:** Instantly toggle between Turkish (Default) and English.
+- **Tech/AI Identity:** Cyber-themed UI with glassmorphism, responsive grid layouts, and an interactive, mouse-tracking neural-network particle background.
+- **Theme Toggling:** Seamless switching between Dark Mode and Light Mode.
 
-    // Geçerli not aralığını kontrol et
-    if (isNaN(vize) || isNaN(final) || vize < 0 || vize > 100 || final < 0 || final > 100) {
-        // Notlar geçerli değilse veya aralık dışındaysa hata mesajı göster
-        var sonuc = document.getElementById("sonuc");
-        sonuc.innerHTML = "Geçerli notlar girin (0-100 arasında).";
-        return;
-    }
+## 🧮 Calculations
 
-    // Ara sınavın %40, yarıyıl sonu sınavının %60 ağırlığı ile hesaplanması
-    var ortalama = (vize * 0.4) + (final * 0.6);
+### 1. Weighted Average
+- **Midterm:** 40%
+- **Final:** 60%
+- *(Optional) Assignments can be included in custom weights if provided.*
 
-    var sonuc = document.getElementById("sonuc");
-```
-### Calculation of letter grade and success status according to the average
+### 2. Bell Curve (Relative Grading)
+- **Z-Score:** `(Student Score - Class Average) / Standard Deviation`
+- **T-Score:** `60 + (10 × Z)`
 
-Here we are using an if else if loop via javascript to get output according to the state of the average.
+## 💻 Tech Stack
+- **Frontend:** Semantic HTML5, CSS3 Variables (Custom Properties), Vanilla JavaScript.
+- **Libraries:**
+  - `Chart.js` (Interactive Data Visualization)
+  - `html2pdf.js` (Client-side PDF Generation)
+- **Architecture:** Local Storage for persistent data, Service Workers for PWA capabilities, Native `<canvas>` API for background animations.
 
-```
-javascript
-if (ortalama >= 90) {
-        sonuc.innerHTML = "Ortalama: AA<br>Notunuz: Başarılı";
-    } else if (ortalama >= 80) {
-        sonuc.innerHTML = "Ortalama: BA<br>Notunuz: Başarılı";
-    } else if (ortalama >= 70) {
-        sonuc.innerHTML = "Ortalama: BB<br>Notunuz: Başarılı";
-    } else if (ortalama >= 60) {
-        sonuc.innerHTML = "Ortalama: CB<br>Notunuz: Başarılı";
-    } else if (ortalama >= 50) {
-        sonuc.innerHTML = "Ortalama: CC<br>Notunuz: Başarılı";
-    } else if (ortalama >= 40) {
-        sonuc.innerHTML = "Ortalama: DC<br>Notunuz: Başarısız";
-    } else {
-        sonuc.innerHTML = "Ortalama: FF<br>Notunuz: Başarısız";
-    }
-}
+## 👨‍💻 About the Developer
 
-document.getElementById("grade-form").addEventListener("submit", function (e) {
-    e.preventDefault(); // Form gönderimini engelle
-    hesapla(); // Hesapla fonksiyonunu çağır
-});
-```
+**Adem Can Demirci**
+*Computer Engineering Student*
 
-see my web-page in https://ortahesapla.netlify.app
+Passionate about exploring modern technology and building intelligent systems.
+- **Interests:** Artificial Intelligence, Data Science, Software Engineering, Cyber Security.
 
-## Networks
-[LinkedIn Adem Can Demirci](https://www.linkedin.com/in/adem-can-demirci-100acd100/)
+🌍 [LinkedIn Profile](https://www.linkedin.com/in/adem-can-demircii/)
+
+---
+*© 2026 Adem Can Demirci. All Rights Reserved.*

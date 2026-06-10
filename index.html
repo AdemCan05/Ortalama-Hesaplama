@@ -1,28 +1,300 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ortalama Hesaplama</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>İSTE Çan Sistemi Hesaplayıcı | İSTE Bell Curve Calculator</title>
+    <meta name="description" content="Calculate your weighted average, estimate your letter grade and simulate the official bell curve system used by İskenderun Technical University.">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- CDNs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
-<body>
-    <div id="ortalama-hesaplama">
-        <h1>Ortalama Hesaplama</h1>
-        <form id="grade-form">
-            <input id="exam-count" name="exam-count" placeholder="Sınav Sayısını Giriniz." type="text">
-            <div id="exam-fields"></div>
-            <input type="submit" value="Hesapla">
-        </form>
-        <div id="sonuc"></div>
-        <div id="bell-egri"></div>
-    </div>
-    <footer>
-        <p>&#169; 2024 Adem Can Demirci  All Rights Reserved.</p>
-        <p>Profillerimi Ziyaret Edin</p>
-        <a href="https://www.linkedin.com/in/adem-can-demirci">LinkedIn</a>
-        <a href="https://github.com/AdemCan05">GitHub</a>
+<body class="dark-mode tech-theme">
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <div class="logo-orb"></div>
+                <span class="logo-text">İSTE<span class="text-glow">Curve</span></span>
+            </div>
+            <nav class="nav-links">
+                <a href="#workspace" data-i18n="nav-calc">Hesaplayıcı</a>
+                <a href="#grading-info" data-i18n="nav-table">Not Tablosu</a>
+                <a href="#about-dev" data-i18n="nav-about">Geliştirici</a>
+                <a href="#faq" data-i18n="nav-faq">S.S.S.</a>
+            </nav>
+            <div class="nav-actions">
+                <div class="lang-switcher">
+                    <button id="lang-tr" class="lang-btn active">TR</button>
+                    <button id="lang-en" class="lang-btn">EN</button>
+                </div>
+                
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="exportable-area">
+        <!-- Hero with Particle Background -->
+        <section class="hero cyber-grid">
+            <canvas id="particle-canvas"></canvas>
+            <div class="container text-center hero-content-wrapper">
+                <h1 class="hero-title" data-i18n="hero-title">İSTE Çan Sistemi Hesaplayıcı</h1>
+                <p class="hero-subtitle mx-auto" data-i18n="hero-subtitle">İskenderun Teknik Üniversitesi not sistemine göre ağırlıklı ortalamanızı hesaplayın, harf notunuzu tahmin edin ve sınıftaki konumunuzu analiz edin.</p>
+            </div>
+        </section>
+
+        <!-- Main Workspace -->
+        <section id="workspace" class="workspace container">
+            
+            <!-- Tab Navigation -->
+            <div class="tab-container">
+                <button class="tab-btn active" id="tab-calc">
+                    <span data-i18n="tab-avg">Ortalama Hesapla</span>
+                </button>
+                <button class="tab-btn" id="tab-sim">
+                    <span data-i18n="tab-sim">Çan Sistemi Simülasyonu</span>
+                </button>
+            </div>
+
+            <!-- Calculator View -->
+            <div id="calculator-view" class="form-view">
+                <div class="glass-panel cyber-border">
+                    <div class="dual-pane">
+                        <div>
+                            <h2 class="panel-title" data-i18n="calc-title">Ağırlıklı Ortalama Hesaplayıcı</h2>
+                            <p class="panel-desc" data-i18n="calc-desc">Sınav notlarınızı girin (0-100)</p>
+                            
+                            <form id="calc-form" novalidate>
+                                <div class="input-group">
+                                    <label for="midterm" data-i18n="lbl-midterm">Vize Notu (%40)</label>
+                                    <input type="number" id="midterm" class="tech-input" min="0" max="100" step="0.01" required placeholder="0-100">
+                                </div>
+                                <div class="input-group">
+                                    <label for="final" data-i18n="lbl-final">Final Notu (%60)</label>
+                                    <input type="number" id="final" class="tech-input" min="0" max="100" step="0.01" required placeholder="0-100">
+                                </div>
+                                <div class="input-group">
+                                    <label for="optional" data-i18n="lbl-optional">Ödev/Kısa Sınav (İsteğe Bağlı)</label>
+                                    <input type="number" id="optional" class="tech-input" min="0" max="100" step="0.01" placeholder="0-100">
+                                </div>
+                                <div class="error-text" id="calc-error" data-i18n="err-valid">Lütfen 0 ile 100 arasında geçerli bir not giriniz.</div>
+                                <button type="submit" class="btn-action w-100" data-i18n="btn-calculate">Hesapla</button>
+                            </form>
+                        </div>
+                        
+                        <div>
+                            <div id="calc-result" class="result-box hidden h-100">
+                                <h3 data-i18n="res-title">Sonuçlarınız</h3>
+                                <div class="data-display mt-4">
+                                    <div class="data-item">
+                                        <span class="data-label" data-i18n="res-avg">Ortalama</span>
+                                        <span class="data-value tech-font text-glow" id="res-average">--</span>
+                                    </div>
+                                </div>
+                                <div id="res-status-banner" class="status-banner mt-5">
+                                    <span id="res-status-text">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulator View -->
+            <div id="simulator-view" class="hidden form-view">
+                <div class="glass-panel cyber-border">
+                    <div class="dual-pane">
+                        <div>
+                            <h2 class="panel-title" data-i18n="curve-title">Çan Sistemi Simülasyonu</h2>
+                            <p class="panel-desc" data-i18n="curve-desc">Sınıf verilerini girerek T-Skoru ve tahmini harf notunuzu görün</p>
+                            
+                            <form id="sim-form" novalidate>
+                                <div class="input-group">
+                                    <label for="sim-student" data-i18n="lbl-student-avg">Öğrenci Ortalaması</label>
+                                    <input type="number" id="sim-student" class="tech-input" min="0" max="100" step="0.01" required placeholder="0-100">
+                                </div>
+                                <div class="input-group">
+                                    <label for="sim-class" data-i18n="lbl-class-avg">Sınıf Ortalaması</label>
+                                    <input type="number" id="sim-class" class="tech-input" min="0" max="100" step="0.01" required placeholder="0-100">
+                                </div>
+                                <div class="input-group">
+                                    <label for="sim-std" data-i18n="lbl-std-dev">Standart Sapma</label>
+                                    <input type="number" id="sim-std" class="tech-input" min="0" max="50" step="0.01" required placeholder="e.g. 15">
+                                </div>
+                                <div class="error-text" id="sim-error" data-i18n="err-sim-valid">Lütfen geçerli değerler giriniz.</div>
+                                <button type="submit" class="btn-action w-100" data-i18n="btn-sim-calc">Simülasyonu Çalıştır</button>
+                            </form>
+                        </div>
+                        
+                        <div>
+                            <div id="sim-result" class="result-box hidden h-100">
+                                <h3 data-i18n="curve-res-title">Çan Analizi</h3>
+                                <div class="data-display mt-4">
+                                    <div class="data-item mb-3">
+                                        <span class="data-label" data-i18n="res-z-score">Z-Skoru</span>
+                                        <span class="data-value tech-font" id="res-z">--</span>
+                                    </div>
+                                    <div class="data-item mb-3">
+                                        <span class="data-label" data-i18n="res-t-score">T-Skoru</span>
+                                        <span class="data-value tech-font text-glow" id="res-t">--</span>
+                                    </div>
+                                    <div class="data-item">
+                                        <span class="data-label" data-i18n="res-est-grade">Tahmini Harf Notu</span>
+                                        <span class="data-value tech-font text-glow" id="res-grade">--</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Visualization -->
+                <div id="visualization" class="glass-panel cyber-border mt-5 hidden">
+                    <div class="panel-header flex-between">
+                        <div>
+                            <h2 class="panel-title" data-i18n="vis-title">Çan Eğrisi Görselleştirmesi</h2>
+                            <p class="panel-desc" data-i18n="vis-desc">Sınıftaki konumunuz</p>
+                        </div>
+                        <button id="btn-export" class="btn-secondary btn-sm" data-i18n="btn-export-pdf">PDF İndir</button>
+                    </div>
+                    <div class="chart-container mt-4">
+                        <canvas id="bellCurveChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Official Grading Info -->
+        <section id="grading-info" class="container mt-5">
+            <div class="glass-panel">
+                <h2 class="panel-title text-center" data-i18n="info-title">Resmi İSTE Notlandırma Bilgisi</h2>
+                
+                <div class="alert-box danger mt-4">
+                    <strong data-i18n="important-notice">ÖNEMLİ BİLGİ</strong>
+                    <p data-i18n="ff-rule-text">İSTE yönetmeliğine göre: Ağırlıklı ortalaması 30'un altında olan VEYA Final sınavı 30'un altında olan öğrenciler otomatik olarak FF alır.</p>
+                </div>
+
+                <div class="table-responsive mt-4">
+                    <table class="tech-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="tbl-range">Puan Aralığı</th>
+                                <th data-i18n="tbl-grade">Harf Notu</th>
+                                <th data-i18n="tbl-coeff">Katsayı</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>90 - 100</td><td><span class="badge-grade aa">AA</span></td><td>4.00</td></tr>
+                            <tr><td>80 - 89</td><td><span class="badge-grade ba">BA</span></td><td>3.50</td></tr>
+                            <tr><td>70 - 79</td><td><span class="badge-grade bb">BB</span></td><td>3.00</td></tr>
+                            <tr><td>65 - 69</td><td><span class="badge-grade cb">CB</span></td><td>2.50</td></tr>
+                            <tr><td>60 - 64</td><td><span class="badge-grade cc">CC</span></td><td>2.00</td></tr>
+                            <tr><td>55 - 59</td><td><span class="badge-grade dc">DC</span></td><td>1.50</td></tr>
+                            <tr><td>50 - 54</td><td><span class="badge-grade dd">DD</span></td><td>1.00</td></tr>
+                            <tr><td>40 - 49</td><td><span class="badge-grade fd">FD</span></td><td>0.50</td></tr>
+                            <tr><td>0 - 39</td><td><span class="badge-grade ff">FF</span></td><td>0.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Developer -->
+        <section id="about-dev" class="container mt-5">
+            <div class="glass-panel text-center">
+                <h2 class="panel-title" data-i18n="dev-title">Geliştirici Hakkında</h2>
+                <div class="mt-4">
+                    <h3 class="text-glow" data-i18n="dev-name">Adem Can Demirci</h3>
+                    <p class="mt-2 text-secondary" data-i18n="dev-role">Bilgisayar Mühendisliği Öğrencisi</p>
+                    
+                    <div class="mt-4">
+                        <strong data-i18n="dev-interests">İlgi Alanları:</strong>
+                        <div class="tags-container mt-2">
+                            <span class="badge-tag" data-i18n="dev-ai">Yapay Zeka</span>
+                            <span class="badge-tag" data-i18n="dev-ds">Veri Bilimi</span>
+                            <span class="badge-tag" data-i18n="dev-se">Yazılım Geliştirme</span>
+                            <span class="badge-tag" data-i18n="dev-cyber">Siber Güvenlik</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-5">
+                        <a href="https://www.linkedin.com/in/adem-can-demircii/" target="_blank" class="btn-primary">LinkedIn Profili</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="container mt-5 mb-5">
+            <div class="glass-panel">
+                <h2 class="panel-title text-center" data-i18n="faq-title">Sıkça Sorulan Sorular</h2>
+                <div class="accordion-container mt-4">
+                    <details class="accordion-item" open>
+                        <summary data-i18n="q1">Ağırlıklı ortalama nasıl hesaplanır?</summary>
+                        <div class="accordion-content">
+                            <p data-i18n="a1">Varsayılan olarak Vize sınavının %40'ı ve Final sınavının %60'ı alınarak toplanır.</p>
+                        </div>
+                    </details>
+                    <details class="accordion-item">
+                        <summary data-i18n="q2">Çan eğrisi sistemi nedir?</summary>
+                        <div class="accordion-content">
+                            <p data-i18n="a2">Öğrencilerin notlarının sınıfın genel başarısına (sınıf ortalaması ve standart sapma) göre değerlendirildiği bağıl not sistemidir.</p>
+                        </div>
+                    </details>
+                    <details class="accordion-item">
+                        <summary data-i18n="q3">T-Skoru nasıl hesaplanır?</summary>
+                        <div class="accordion-content">
+                            <p data-i18n="a3">Önce Z-Skoru bulunur: Z = (Notunuz - Sınıf Ortalaması) / Standart Sapma. Ardından T-Skoru hesaplanır: T = 60 + (10 × Z).</p>
+                        </div>
+                    </details>
+                    <details class="accordion-item">
+                        <summary data-i18n="q4">Final sınavından 30'un altında alırsam ne olur?</summary>
+                        <div class="accordion-content">
+                            <p data-i18n="a4">İSTE yönetmeliğine göre final sınavından 30'un altında alan veya genel ortalaması 30'un altında olan öğrenciler doğrudan FF harf notu ile başarısız sayılırlar.</p>
+                        </div>
+                    </details>
+                    <details class="accordion-item">
+                        <summary data-i18n="q5">İSTE'de bağıl değerlendirme (çan) nasıl çalışır?</summary>
+                        <div class="accordion-content">
+                            <p data-i18n="a5">Sınıf mevcudu ve ortalamasına bağlı olarak sistem mutlak veya bağıl değerlendirme (çan eğrisi) uygulayabilir.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="cyber-footer">
+        <div class="container footer-content">
+            <p>&copy; 2026 Adem Can Demirci. All Rights Reserved.</p>
+            <div class="footer-links">
+                <a href="#about-dev" data-i18n="nav-about">Geliştirici</a>
+                <a href="https://www.linkedin.com/in/adem-can-demircii/" target="_blank">LinkedIn</a>
+            </div>
+        </div>
     </footer>
+
+    <script src="i18n.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,21 @@
+{
+  "name": "İSTE Çan Sistemi Hesaplayıcı",
+  "short_name": "İSTE Curve",
+  "description": "İskenderun Teknik Üniversitesi not ve çan sistemi hesaplayıcı.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b1120",
+  "theme_color": "#0b1120",
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
