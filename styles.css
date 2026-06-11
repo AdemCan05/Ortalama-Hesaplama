@@ -290,7 +290,7 @@ body {
 @media (min-width: 1024px) {
     .dual-pane {
         grid-template-columns: 1fr 1fr;
-        align-items: start;
+        align-items: center;
     }
 }
 
