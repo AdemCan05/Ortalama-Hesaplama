@@ -181,16 +181,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Calculator Logic ---
     function getAbsoluteGrade(avg, finalScore) {
-        if (avg < 30 || finalScore < 30) return { letter: 'FF', code: 'status-ff-rule', pass: false };
-        if (avg >= 90) return { letter: 'AA', code: 'status-success', pass: true };
-        if (avg >= 80) return { letter: 'BA', code: 'status-success', pass: true };
-        if (avg >= 70) return { letter: 'BB', code: 'status-success', pass: true };
-        if (avg >= 65) return { letter: 'CB', code: 'status-success', pass: true };
-        if (avg >= 60) return { letter: 'CC', code: 'status-success', pass: true };
-        if (avg >= 55) return { letter: 'DC', code: 'status-success', pass: true };
-        if (avg >= 50) return { letter: 'DD', code: 'status-success', pass: true };
-        if (avg >= 40) return { letter: 'FD', code: 'status-fail', pass: false };
-        return { letter: 'FF', code: 'status-fail', pass: false };
+        if (avg < 30 || finalScore < 30) return { letter: 'FF', code: 'status-ff-rule', pass: false, perfCode: 'perf-critical' };
+        if (avg >= 90) return { letter: 'AA', code: 'status-passed', pass: true, perfCode: 'perf-excellent' };
+        if (avg >= 80) return { letter: 'BA', code: 'status-passed', pass: true, perfCode: 'perf-good' };
+        if (avg >= 70) return { letter: 'BB', code: 'status-passed', pass: true, perfCode: 'perf-good' };
+        if (avg >= 65) return { letter: 'CB', code: 'status-passed', pass: true, perfCode: 'perf-average' };
+        if (avg >= 60) return { letter: 'CC', code: 'status-passed', pass: true, perfCode: 'perf-average' };
+        if (avg >= 55) return { letter: 'DC', code: 'status-failed', pass: false, perfCode: 'perf-risk' };
+        if (avg >= 50) return { letter: 'DD', code: 'status-failed', pass: false, perfCode: 'perf-risk' };
+        if (avg >= 40) return { letter: 'FD', code: 'status-failed', pass: false, perfCode: 'perf-critical' };
+        return { letter: 'FF', code: 'status-failed', pass: false, perfCode: 'perf-critical' };
     }
 
     calcForm.addEventListener('submit', (e) => {
@@ -219,14 +219,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const gradeInfo = getAbsoluteGrade(average, final);
         resAverage.textContent = average.toFixed(2);
         
-        // Use i18n for status text
-        resStatusText.textContent = window.i18n[currentLang][gradeInfo.code] + " (" + gradeInfo.letter + ")";
+        const resPerfText = document.getElementById('res-perf-text');
+        const resIcon = document.getElementById('res-icon');
         
-        resStatusBanner.className = 'status-banner mt-3';
-        if (gradeInfo.pass) {
-            resStatusBanner.classList.add('success');
-        } else {
-            resStatusBanner.classList.add('fail');
+        // Use i18n for status text
+        resStatusText.textContent = gradeInfo.letter + " | " + window.i18n[currentLang][gradeInfo.code];
+        if (resPerfText) {
+            resPerfText.textContent = window.i18n[currentLang][gradeInfo.perfCode];
+        }
+        
+        resStatusBanner.className = 'status-banner mt-3 ' + gradeInfo.perfCode;
+        
+        if (resIcon) {
+            let iconHtml = '';
+            if (gradeInfo.perfCode === 'perf-excellent') {
+                iconHtml = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
+            } else if (gradeInfo.perfCode === 'perf-good') {
+                iconHtml = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+            } else if (gradeInfo.perfCode === 'perf-average') {
+                iconHtml = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
+            } else if (gradeInfo.perfCode === 'perf-risk') {
+                iconHtml = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
+            } else {
+                iconHtml = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+            }
+            resIcon.innerHTML = iconHtml;
         }
 
         calcResultBox.classList.remove('hidden');
@@ -447,38 +464,82 @@ document.addEventListener('DOMContentLoaded', () => {
             mouse.y = null;
         });
 
+        // Magnetic UI Elements Effect
+        const interactiveElements = document.querySelectorAll('.glass-panel, .btn-primary, .btn-action, .tab-btn');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const deltaX = (x - centerX) / centerX;
+                const deltaY = (y - centerY) / centerY;
+                
+                // Spring magnetic effect
+                el.style.transform = `perspective(1000px) rotateX(${-deltaY * 5}deg) rotateY(${deltaX * 5}deg) translateZ(10px)`;
+                
+                // Add glass ripple / glow
+                el.style.boxShadow = `
+                    ${-deltaX * 10}px ${-deltaY * 10}px 30px rgba(59, 130, 246, 0.2),
+                    0 8px 32px rgba(0, 0, 0, 0.1)
+                `;
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = '';
+                el.style.boxShadow = '';
+            });
+        });
+
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 1; 
-                this.vy = (Math.random() - 0.5) * 1;
-                this.size = Math.random() * 2 + 1;
+                this.vx = (Math.random() - 0.5) * 0.5; 
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.size = Math.random() * 2.5 + 1;
+                this.friction = 0.95;
+                this.springFactor = 0.02;
             }
 
             update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
-                if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
+                // Return to base slowly (spring animation)
+                const dx = this.baseX - this.x;
+                const dy = this.baseY - this.y;
+                this.vx += dx * this.springFactor;
+                this.vy += dy * this.springFactor;
 
                 if (mouse.x != null && mouse.y != null) {
-                    let dx = mouse.x - this.x;
-                    let dy = mouse.y - this.y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    let dmx = mouse.x - this.x;
+                    let dmy = mouse.y - this.y;
+                    let distance = Math.sqrt(dmx * dmx + dmy * dmy);
                     
                     if (distance < mouse.radius) {
-                        const forceDirectionX = dx / distance;
-                        const forceDirectionY = dy / distance;
-                        const force = (mouse.radius - distance) / mouse.radius;
-                        const pushX = forceDirectionX * force * 1.5;
-                        const pushY = forceDirectionY * force * 1.5;
+                        // Magnetic attraction + subtle gravity distortion
+                        const forceDirectionX = dmx / distance;
+                        const forceDirectionY = dmy / distance;
                         
-                        this.x -= pushX;
-                        this.y -= pushY;
+                        // Inverse square law for gravity distortion
+                        const force = (mouse.radius - distance) / mouse.radius;
+                        
+                        // Push away if too close, pull if at edge (ripple)
+                        let pushFactor = (distance < mouse.radius * 0.5) ? -2 : 1.5;
+                        
+                        this.vx += forceDirectionX * force * pushFactor;
+                        this.vy += forceDirectionY * force * pushFactor;
                     }
                 }
+                
+                this.vx *= this.friction;
+                this.vy *= this.friction;
+                
+                this.x += this.vx;
+                this.y += this.vy;
             }
 
             draw() {

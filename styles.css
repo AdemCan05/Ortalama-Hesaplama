@@ -17,12 +17,12 @@
     --fail-glow: rgba(239, 68, 68, 0.4);
     --warning: #f59e0b;
     
-    --glass-bg: rgba(15, 23, 42, 0.6);
-    --glass-border: rgba(59, 130, 246, 0.2);
-    --glass-border-hover: rgba(59, 130, 246, 0.5);
+    --glass-bg: rgba(15, 23, 42, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-border-hover: rgba(255, 255, 255, 0.15);
     
-    --input-bg: rgba(15, 23, 42, 0.8);
-    --input-border: #334155;
+    --input-bg: rgba(0, 0, 0, 0.2);
+    --input-border: rgba(255, 255, 255, 0.1);
     
     --transition: all 0.3s ease;
     --font-sans: 'Inter', sans-serif;
@@ -38,12 +38,12 @@
     --accent-secondary: #0284c7;
     --accent-glow: rgba(37, 99, 235, 0.3);
     
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(37, 99, 235, 0.2);
-    --glass-border-hover: rgba(37, 99, 235, 0.5);
+    --glass-bg: rgba(255, 255, 255, 0.5);
+    --glass-border: rgba(0, 0, 0, 0.05);
+    --glass-border-hover: rgba(0, 0, 0, 0.1);
     
-    --input-bg: #ffffff;
-    --input-border: #cbd5e1;
+    --input-bg: rgba(255, 255, 255, 0.4);
+    --input-border: rgba(0, 0, 0, 0.1);
 }
 
 /* ==========================================================================
@@ -299,13 +299,19 @@ body {
    ========================================================================== */
 .glass-panel {
     background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid var(--glass-border);
-    border-radius: 16px;
+    border-radius: 24px;
     padding: 32px;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.glass-panel:hover {
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+    border-color: var(--glass-border-hover);
 }
 .cyber-border::before {
     content: '';
@@ -359,14 +365,33 @@ body {
 
 .status-banner {
     padding: 16px;
-    border-radius: 8px;
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.1rem;
+    border-radius: 16px;
+    text-align: left;
     border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: var(--transition);
 }
-.status-banner.success { background: var(--success-glow); border-color: var(--success); color: var(--success); }
-.status-banner.fail { background: var(--fail-glow); border-color: var(--fail); color: var(--fail); }
+.status-text-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.status-main { font-size: 1.25rem; font-weight: 800; }
+.status-sub { font-size: 0.9rem; font-weight: 500; opacity: 0.8; }
+
+/* Performance States */
+.perf-excellent { background: rgba(52, 211, 153, 0.15); border-color: rgba(52, 211, 153, 0.4); color: #34d399; box-shadow: 0 4px 20px rgba(52, 211, 153, 0.1); }
+.perf-good { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1); }
+.perf-average { background: rgba(250, 204, 21, 0.15); border-color: rgba(250, 204, 21, 0.4); color: #facc15; box-shadow: 0 4px 20px rgba(250, 204, 21, 0.1); }
+.perf-risk { background: rgba(251, 146, 60, 0.15); border-color: rgba(251, 146, 60, 0.4); color: #fb923c; box-shadow: 0 4px 20px rgba(251, 146, 60, 0.1); }
+.perf-critical { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #f87171; box-shadow: 0 4px 20px rgba(239, 68, 68, 0.1); }
+.light-mode .perf-excellent { color: #059669; }
+.light-mode .perf-good { color: #2563eb; }
+.light-mode .perf-average { color: #d97706; }
+.light-mode .perf-risk { color: #ea580c; }
+.light-mode .perf-critical { color: #dc2626; }
 
 /* ==========================================================================
    Tables, Alerts, Tags

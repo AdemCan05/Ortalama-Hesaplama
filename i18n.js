@@ -25,8 +25,13 @@ window.i18n = {
         
         "res-title": "Sonuçlarınız",
         "res-avg": "Ortalama",
-        "status-success": "Başarılı",
-        "status-fail": "Başarısız",
+        "status-passed": "GEÇTİ",
+        "status-failed": "KALDI",
+        "perf-excellent": "Mükemmel Performans",
+        "perf-good": "İyi Performans",
+        "perf-average": "Ortalama Performans",
+        "perf-risk": "Riskli",
+        "perf-critical": "Kritik",
         "status-ff-rule": "Otomatik FF (Kural Nedeniyle)",
 
         // Bell Curve Simulator
@@ -58,14 +63,10 @@ window.i18n = {
         "tbl-coeff": "Katsayı",
 
         // Developer Section
-        "dev-title": "Geliştirici Hakkında",
+        "dev-title": "Hakkımda Daha Fazla Bilgi Edinin",
         "dev-name": "Adem Can Demirci",
-        "dev-role": "Bilgisayar Mühendisliği Öğrencisi",
-        "dev-interests": "İlgi Alanları:",
-        "dev-ai": "Yapay Zeka",
-        "dev-ds": "Veri Bilimi",
-        "dev-se": "Yazılım Geliştirme",
-        "dev-cyber": "Siber Güvenlik",
+        "dev-desc": "Projelerimi, deneyimlerimi ve bir yazılım geliştirici olarak yolculuğumu keşfetmek için kişisel portföy web sitemi ziyaret edin.",
+        "btn-portfolio": "Portföyümü Ziyaret Et",
 
         // FAQ
         "faq-title": "Sıkça Sorulan Sorular",
@@ -106,8 +107,13 @@ window.i18n = {
         
         "res-title": "Your Results",
         "res-avg": "Average",
-        "status-success": "Successful",
-        "status-fail": "Failed",
+        "status-passed": "PASSED",
+        "status-failed": "FAILED",
+        "perf-excellent": "Excellent Performance",
+        "perf-good": "Good Performance",
+        "perf-average": "Average Performance",
+        "perf-risk": "At Risk",
+        "perf-critical": "Critical",
         "status-ff-rule": "Automatic FF (Rule Enforced)",
 
         // Bell Curve Simulator
@@ -139,14 +145,10 @@ window.i18n = {
         "tbl-coeff": "Coefficient",
 
         // Developer Section
-        "dev-title": "About the Developer",
+        "dev-title": "Learn More About Me",
         "dev-name": "Adem Can Demirci",
-        "dev-role": "Computer Engineering Student",
-        "dev-interests": "Interests:",
-        "dev-ai": "Artificial Intelligence",
-        "dev-ds": "Data Science",
-        "dev-se": "Software Engineering",
-        "dev-cyber": "Cyber Security",
+        "dev-desc": "Visit my personal portfolio website to explore my projects, experience, and journey as a software developer.",
+        "btn-portfolio": "Visit My Portfolio",
 
         // FAQ
         "faq-title": "Frequently Asked Questions",

@@ -10,6 +10,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f172a">
     <link rel="apple-touch-icon" href="icon-192x192.png">
+    <link rel="icon" type="image/png" href="calculator.png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -101,18 +102,22 @@
                         </div>
                         
                         <div>
-                            <div id="calc-result" class="result-box hidden h-100">
-                                <h3 data-i18n="res-title">Sonuçlarınız</h3>
-                                <div class="data-display mt-4">
-                                    <div class="data-item">
-                                        <span class="data-label" data-i18n="res-avg">Ortalama</span>
-                                        <span class="data-value tech-font text-glow" id="res-average">--</span>
+                                <div id="calc-result" class="result-box hidden h-100">
+                                    <h3 data-i18n="res-title">Sonuçlarınız</h3>
+                                    <div class="data-display mt-4">
+                                        <div class="data-item">
+                                            <span class="data-label" data-i18n="res-avg">Ortalama</span>
+                                            <span class="data-value tech-font text-glow" id="res-average">--</span>
+                                        </div>
+                                    </div>
+                                    <div id="res-status-banner" class="status-banner mt-5">
+                                        <div id="res-icon" class="status-icon"></div>
+                                        <div class="status-text-group">
+                                            <span id="res-status-text" class="status-main">--</span>
+                                            <span id="res-perf-text" class="status-sub">--</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div id="res-status-banner" class="status-banner mt-5">
-                                    <span id="res-status-text">--</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -224,20 +229,10 @@
                 <h2 class="panel-title" data-i18n="dev-title">Geliştirici Hakkında</h2>
                 <div class="mt-4">
                     <h3 class="text-glow" data-i18n="dev-name">Adem Can Demirci</h3>
-                    <p class="mt-2 text-secondary" data-i18n="dev-role">Bilgisayar Mühendisliği Öğrencisi</p>
+                    <p class="mt-3 text-secondary" style="max-width: 600px; margin-left: auto; margin-right: auto;" data-i18n="dev-desc">Projelerimi, deneyimlerimi ve bir yazılım geliştirici olarak yolculuğumu keşfetmek için kişisel portföy web sitemi ziyaret edin.</p>
                     
-                    <div class="mt-4">
-                        <strong data-i18n="dev-interests">İlgi Alanları:</strong>
-                        <div class="tags-container mt-2">
-                            <span class="badge-tag" data-i18n="dev-ai">Yapay Zeka</span>
-                            <span class="badge-tag" data-i18n="dev-ds">Veri Bilimi</span>
-                            <span class="badge-tag" data-i18n="dev-se">Yazılım Geliştirme</span>
-                            <span class="badge-tag" data-i18n="dev-cyber">Siber Güvenlik</span>
-                        </div>
-                    </div>
-
                     <div class="mt-5">
-                        <a href="https://www.linkedin.com/in/adem-can-demircii/" target="_blank" class="btn-primary">LinkedIn Profili</a>
+                        <a href="https://ademcan05.github.io" target="_blank" class="btn-primary" data-i18n="btn-portfolio">Portföyümü Ziyaret Et</a>
                     </div>
                 </div>
             </div>
